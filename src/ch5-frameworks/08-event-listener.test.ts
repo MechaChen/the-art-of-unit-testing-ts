@@ -5,7 +5,7 @@ describe('Event listener', () => {
   }
 
   class Renderer {
-    view;
+    view: IView;
 
     constructor(view: IView) {
       this.view = view;
