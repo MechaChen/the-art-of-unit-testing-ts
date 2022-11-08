@@ -1,7 +1,13 @@
 describe('Event listener', () => {
+  document.body.innerHTML = `
+    <div>
+      <div id="contentWrapper"></div>
+      <button id="btn"></button>
+    </div>
+  `
+  
   interface IView {
     content: string;
-    load: () => void;
   }
 
   class Renderer {
@@ -9,11 +15,15 @@ describe('Event listener', () => {
 
     constructor(view: IView) {
       this.view = view;
-      this.view.load = () => this.loadContent(this.view.content);
+      const button = document.getElementById('btn');
+      button?.addEventListener('click', this.loadContent)
     }
 
-    loadContent(content: string) {
-      document.body.innerText = content;
+    loadContent = () => {
+      const contentWrapper = document.getElementById('contentWrapper');
+      if (contentWrapper) {
+        contentWrapper.innerText = this.view.content
+      }
     }
   }
 
@@ -21,15 +31,14 @@ describe('Event listener', () => {
     // Arrange
     const mockView: IView = {
       content: 'Hello world',
-      load: () => {},
     };
 
     const presenter = new Renderer(mockView);
 
     // Act
-    mockView.load();
+    document.getElementById('btn')?.click();
 
     // Assert
-    expect(document.body.innerText).toBe('Hello world');
+    expect(document.getElementById('contentWrapper')?.innerText).toBe('Hello world');
   })
 })
