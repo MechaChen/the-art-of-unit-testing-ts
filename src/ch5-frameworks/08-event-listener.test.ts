@@ -1,5 +1,6 @@
 describe('Event listener', () => {
   interface IView {
+    content: string;
     load: () => void;
   }
 
@@ -8,17 +9,18 @@ describe('Event listener', () => {
 
     constructor(view: IView) {
       this.view = view;
-      this.view.load = this.loadContent;
+      this.view.load = () => this.loadContent(this.view.content);
     }
 
-    loadContent() {
-      document.body.innerText = 'Hello world';
+    loadContent(content: string) {
+      document.body.innerText = content;
     }
   }
 
   it('should render "Hello World" when view is loaded', () => {
     // Arrange
     const mockView: IView = {
+      content: 'Hello world',
       load: () => {},
     };
 
